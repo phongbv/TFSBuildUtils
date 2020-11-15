@@ -1,0 +1,48 @@
+{
+   "id": "61ed0e1d-efb7-406e-a42b-80f5d22e6d54",
+   "name": "iSTSCustomCopy",
+   "friendlyName": "Copy file customize for iSTS",
+   "description": "Auto extract publish profile and copy file to destination folder.",
+   "category": "Deploy",
+   "author": "Bui Van Phong",
+  "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 26
+    },
+   "minimumAgentVersion": "1.83.0",
+   "inputs": [
+      {
+         "name": "profilePath",
+         "type": "string",
+         "label": "Publish Profile Path",
+         "defaultValue": "",
+         "required": true,
+         "helpMarkDown": "Đường dẫn tương đối đến file profile."
+      },
+      {
+         "name": "deploymentPath",
+         "type": "string",
+         "label": "Site Source",
+         "defaultValue": "",
+         "required": true,
+         "helpMarkDown": "Đường dẫn tuyệt đối đến thư mục site IIS đang trỏ đến"
+      },
+      {
+         "name": "reportFilePath",
+         "type": "string",
+         "label": "ReportFilePath",
+         "defaultValue": "",
+         "required": true,
+         "helpMarkDown": "Đường dẫn tuyệt đối đến file báo cáo"
+      }
+   ],
+   "instanceNameFormat": "Copy file customize for iSTS $(packtarget)",
+   "execution": {
+      "PowerShell": {
+         "target": "$(currentDirectory)\\CopyAndUpdateReport.ps1",
+         "argumentFormat": "",
+         "workingDirectory": "$(currentDirectory)"
+      }
+   }
+}
