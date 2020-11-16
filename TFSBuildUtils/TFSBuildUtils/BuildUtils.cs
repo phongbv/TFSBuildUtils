@@ -33,10 +33,12 @@ namespace TFSBuildUtils
                 var rowIndex = totalRow + 1;
                 string str = RequestUtil.SendRequest(projectUrl + $"/_apis/build/builds/{buildId}/workitems?api-version=2.0");
                 var buildWorkItem = JsonConvert.DeserializeObject<BuildWorkItemResponse>(str);
+                if (buildWorkItem.RelatedItem.Count == 0) return;
                 worksheet.InsertRow(totalRow + 1, buildWorkItem.RelatedItem.Count);
                 foreach (var item in buildWorkItem.RelatedItem)
                 {
                     var workItem = JsonConvert.DeserializeObject<WorkItemInfo>(RequestUtil.SendRequest(item.url));
+                    InsertText(worksheet, $"A{rowIndex}", buildId + "");
                     InsertText(worksheet, $"A{rowIndex}", workItem.id + "");
                     InsertText(worksheet, $"B{rowIndex}", workItem.Fields.Title + "");
                     InsertText(worksheet, $"C{rowIndex}", workItem.Fields.AreaPath + "");
