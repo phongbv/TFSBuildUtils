@@ -43,13 +43,15 @@ namespace TFSBuildUtils
                 {
                     var workItem = JsonConvert.DeserializeObject<WorkItemInfo>(RequestUtil.SendRequest(item.url));
                     InsertText(worksheet, $"A{rowIndex}", buildId + "");
-                    InsertText(worksheet, $"B{rowIndex}", workItem.id + "");
-                    InsertText(worksheet, $"C{rowIndex}", workItem.Fields.Title + "");
-                    InsertText(worksheet, $"D{rowIndex}", workItem.Fields.AreaPath + "");
-                    InsertText(worksheet, $"E{rowIndex}", workItem.Fields.HandleBy + "");
-                    InsertText(worksheet, $"F{rowIndex}", workItem.Fields.AssignedToTester + "");
-                    InsertText(worksheet, $"G{rowIndex}", workItem.Fields.AssignedTo + "");
-                    InsertText(worksheet, $"H{rowIndex}", workItem.Fields.State + "");
+                    InsertText(worksheet, $"B{rowIndex}", DateTime.Today.ToString("yyyy-MM-dd"));
+                    InsertText(worksheet, $"C{rowIndex}", workItem.id + "", workItem?.Links?.Html?.Href);
+                    InsertText(worksheet, $"D{rowIndex}", workItem.Fields.WorkItemType + "");
+                    InsertText(worksheet, $"E{rowIndex}", workItem.Fields.Title + "");
+                    InsertText(worksheet, $"F{rowIndex}", workItem.Fields.AreaPath + "");
+
+                    InsertText(worksheet, $"G{rowIndex}", workItem.Fields.AssignedToTester + "");
+                    InsertText(worksheet, $"H{rowIndex}", workItem.Fields.AssignedTo + "");
+                    InsertText(worksheet, $"I{rowIndex}", workItem.Fields.State + "");
                     //worksheet.Range[$"A{rowIndex}"].Text = workItem.id+"";
                     //worksheet.Range[$"B{rowIndex}"].Text = workItem.Fields.Title+"";
                     //worksheet.Range[$"C{rowIndex}"].Text = workItem.Fields.AreaPath+"";
@@ -66,10 +68,22 @@ namespace TFSBuildUtils
             }
             //ReadKey();
         }
-        private static void InsertText(IWorksheet worksheet, string cellId, string content)
+        private static void InsertText(IWorksheet worksheet, string cellId, string content, string hyperLink = null)
         {
             var cell = worksheet.Range[cellId];
-            cell.Text = content;
+
+            if (string.IsNullOrEmpty(hyperLink) == false)
+            {
+                IHyperLink hyperlink = worksheet.HyperLinks.Add(cell);
+                hyperlink.Type = ExcelHyperLinkType.Url;
+                hyperlink.Address = hyperLink;
+                hyperlink.ScreenTip = hyperLink;
+                hyperlink.TextToDisplay = content;
+            }
+            else
+            {
+                cell.Text = content;
+            }
             cell.WrapText = true;
             //cell.Borders.Value = ExcelLineStyle.al
 
