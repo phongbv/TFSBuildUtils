@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Syncfusion.XlsIO;
+using System;
 using System.IO;
 using System.Net;
 
@@ -21,6 +22,7 @@ namespace TFSBuildUtils
             {
                 throw new System.ArgumentException($"'{nameof(projectUrl)}' cannot be null or empty", nameof(projectUrl));
             }
+            Console.WriteLine(projectUrl + $"/_apis/build/builds/{buildId}/workitems?api-version=2.0");
 
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzUxOTQzQDMxMzgyZTMzMmUzMENzWmZTWVhsVnd4aHM2dUkwRTVFM1lCNHpNVEVuVmVyWmE3NFNkcnVoNVU9");
             using (ExcelEngine excelEngine = new ExcelEngine())
@@ -31,7 +33,9 @@ namespace TFSBuildUtils
                 IWorksheet worksheet = workbook.Worksheets[0];
                 var totalRow = worksheet.Rows.Length;
                 var rowIndex = totalRow + 1;
+                //Console.WriteLine("Send req");
                 string str = RequestUtil.SendRequest(projectUrl + $"/_apis/build/builds/{buildId}/workitems?api-version=2.0");
+                //Console.WriteLine(str);
                 var buildWorkItem = JsonConvert.DeserializeObject<BuildWorkItemResponse>(str);
                 if (buildWorkItem.RelatedItem.Count == 0) return;
                 worksheet.InsertRow(totalRow + 1, buildWorkItem.RelatedItem.Count);
@@ -39,13 +43,13 @@ namespace TFSBuildUtils
                 {
                     var workItem = JsonConvert.DeserializeObject<WorkItemInfo>(RequestUtil.SendRequest(item.url));
                     InsertText(worksheet, $"A{rowIndex}", buildId + "");
-                    InsertText(worksheet, $"A{rowIndex}", workItem.id + "");
-                    InsertText(worksheet, $"B{rowIndex}", workItem.Fields.Title + "");
-                    InsertText(worksheet, $"C{rowIndex}", workItem.Fields.AreaPath + "");
-                    InsertText(worksheet, $"D{rowIndex}", workItem.Fields.HandleBy + "");
-                    InsertText(worksheet, $"E{rowIndex}", workItem.Fields.AssignedToTester + "");
-                    InsertText(worksheet, $"F{rowIndex}", workItem.Fields.AssignedTo + "");
-                    InsertText(worksheet, $"G{rowIndex}", workItem.Fields.State + "");
+                    InsertText(worksheet, $"B{rowIndex}", workItem.id + "");
+                    InsertText(worksheet, $"C{rowIndex}", workItem.Fields.Title + "");
+                    InsertText(worksheet, $"D{rowIndex}", workItem.Fields.AreaPath + "");
+                    InsertText(worksheet, $"E{rowIndex}", workItem.Fields.HandleBy + "");
+                    InsertText(worksheet, $"F{rowIndex}", workItem.Fields.AssignedToTester + "");
+                    InsertText(worksheet, $"G{rowIndex}", workItem.Fields.AssignedTo + "");
+                    InsertText(worksheet, $"H{rowIndex}", workItem.Fields.State + "");
                     //worksheet.Range[$"A{rowIndex}"].Text = workItem.id+"";
                     //worksheet.Range[$"B{rowIndex}"].Text = workItem.Fields.Title+"";
                     //worksheet.Range[$"C{rowIndex}"].Text = workItem.Fields.AreaPath+"";
@@ -81,7 +85,6 @@ namespace TFSBuildUtils
             WebRequest request = WebRequest.Create(url);
             // If required by the server, set the credentials.
             request.Credentials = CredentialCache.DefaultCredentials;
-
             // Get the response.
             WebResponse response = request.GetResponse();
             // Display the status.
