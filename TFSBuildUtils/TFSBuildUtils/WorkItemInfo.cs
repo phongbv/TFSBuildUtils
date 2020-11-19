@@ -72,6 +72,72 @@ namespace TFSBuildUtils
 
         [JsonProperty("url")]
         public string url { get; set; }
+        [JsonProperty("_links")]
+        public Links Links { get; set; }
+    }
+    public class Self
+    {
+
+        [JsonProperty("href")]
+        public string Href { get; set; }
+    }
+
+    public class WorkItemUpdates
+    {
+
+        [JsonProperty("href")]
+        public string Href { get; set; }
+    }
+
+    public class WorkItemRevisions
+    {
+
+        [JsonProperty("href")]
+        public string Href { get; set; }
+    }
+
+    public class WorkItemHistory
+    {
+
+        [JsonProperty("href")]
+        public string Href { get; set; }
+    }
+
+    public class Html
+    {
+
+        [JsonProperty("href")]
+        public string Href { get; set; }
+    }
+
+    public class WorkItemType
+    {
+
+        [JsonProperty("href")]
+        public string Href { get; set; }
+    }
+
+    public class Links
+    {
+
+        [JsonProperty("self")]
+        public Self Self { get; set; }
+
+        [JsonProperty("workItemUpdates")]
+        public WorkItemUpdates WorkItemUpdates { get; set; }
+
+        [JsonProperty("workItemRevisions")]
+        public WorkItemRevisions WorkItemRevisions { get; set; }
+
+        [JsonProperty("workItemHistory")]
+        public WorkItemHistory WorkItemHistory { get; set; }
+
+        [JsonProperty("html")]
+        public Html Html { get; set; }
+
+        [JsonProperty("workItemType")]
+        public WorkItemType WorkItemType { get; set; }
+
     }
 
 }
