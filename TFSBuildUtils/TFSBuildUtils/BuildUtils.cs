@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Syncfusion.XlsIO;
+using System;
 using System.IO;
 using System.Net;
 
@@ -33,6 +34,7 @@ namespace TFSBuildUtils
                 var rowIndex = totalRow + 1;
                 string str = RequestUtil.SendRequest(projectUrl + $"/_apis/build/builds/{buildId}/workitems?api-version=2.0");
                 var buildWorkItem = JsonConvert.DeserializeObject<BuildWorkItemResponse>(str);
+                Console.WriteLine($"Tổng số work item đang gắn vào bản build {buildId} là {buildWorkItem.RelatedItem.Count}");
                 if (buildWorkItem.RelatedItem.Count == 0) return;
                 worksheet.InsertRow(totalRow + 1, buildWorkItem.RelatedItem.Count);
                 foreach (var item in buildWorkItem.RelatedItem)

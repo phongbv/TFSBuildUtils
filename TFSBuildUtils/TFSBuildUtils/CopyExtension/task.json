@@ -1,0 +1,40 @@
+{
+   "id": "61ed0e1d-efb7-406e-a42b-80f5d22e6d54",
+   "name": "iSTSCustomCopy",
+   "friendlyName": "Tùy chỉnh copy file",
+   "description": "Tự động copy file từ foler đích của deployment profile sang thư mục đích.",
+   "category": "Deploy",
+   "author": "Bùi Văn Phong",
+  "version": {
+        "Major": 3,
+        "Minor": 4,
+        "Patch": 6
+    },
+   "minimumAgentVersion": "1.84.0",
+   "inputs": [
+      {
+         "name": "profilePath",
+         "type": "string",
+         "label": "Publish Profile Path",
+         "defaultValue": "",
+         "required": true,
+         "helpMarkDown": "Đường dẫn tương đối đến file profile."
+      },
+      {
+         "name": "deploymentPath",
+         "type": "string",
+         "label": "Site Source",
+         "defaultValue": "",
+         "required": true,
+         "helpMarkDown": "Đường dẫn tuyệt đối đến thư mục site IIS đang trỏ đến"
+      }
+   ],
+   "instanceNameFormat": "Copy file customize for iSTS $(packtarget)",
+   "execution": {
+      "PowerShell": {
+         "target": "$(currentDirectory)\\CopyFiles.ps1",
+         "argumentFormat": "",
+         "workingDirectory": "$(currentDirectory)"
+      }
+   }
+}

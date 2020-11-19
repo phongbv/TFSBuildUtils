@@ -1,0 +1,32 @@
+{
+   "id": "61ed0e1d-efb7-406e-a42b-80f5452e6d54",
+   "name": "iSTSBuildReport",
+   "friendlyName": "Xuất báo cáo",
+   "description": "Tự động xuất báo cáo khi build thành công bao gồm các work item đang link với bản build hiện tại",
+   "category": "Deploy",
+   "author": "Bùi Văn Phong",
+  "version": {
+        "Major": 3,
+        "Minor": 5,
+        "Patch": 9
+    },
+   "minimumAgentVersion": "1.84.0",
+   "inputs": [
+      {
+         "name": "reportFilePath",
+         "type": "string",
+         "label": "ReportFilePath",
+         "defaultValue": "",
+         "required": true,
+         "helpMarkDown": "Đường dẫn tuyệt đối đến file báo cáo"
+      }
+   ],
+   "instanceNameFormat": "Cập nhật báo cáo cho build $(packtarget)",
+   "execution": {
+      "PowerShell": {
+         "target": "$(currentDirectory)\\UpdateReport.ps1",
+         "argumentFormat": "",
+         "workingDirectory": "$(currentDirectory)"
+      }
+   }
+}
